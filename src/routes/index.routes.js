@@ -3,6 +3,7 @@ import authRoutes from "../modules/auth/auth.routes.js";
 import userRoutes from "../modules/users/user.routes.js";
 import organizationRoutes from "../modules/organizations/organization.routes.js";
 import propertyRoutes from "../modules/properties/property.routes.js";
+import partnerRoutes from "../modules/partners/partner.routes.js";
 
 import { checkDatabaseConnection } from "../shared/infra/health-check.js";
 
@@ -12,6 +13,7 @@ router.use("/auth", authRoutes);
 router.use("/users", userRoutes);
 router.use("/organizations", organizationRoutes);
 router.use("/properties", propertyRoutes);
+router.use("/partners", partnerRoutes);
 
 router.get("/health", async (req, res, next) => {
   try {
