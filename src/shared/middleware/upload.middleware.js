@@ -18,8 +18,8 @@ const storage = new CloudinaryStorage({
 const ALLOWED_MIME = new Set([
   "application/pdf",
   "image/jpeg",
-  "image/png",
   "image/jpg",
+  "image/png",
 ]);
 
 export const upload = multer({

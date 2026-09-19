@@ -4,6 +4,7 @@ import userRoutes from "../modules/users/user.routes.js";
 import organizationRoutes from "../modules/organizations/organization.routes.js";
 import propertyRoutes from "../modules/properties/property.routes.js";
 import partnerRoutes from "../modules/partners/partner.routes.js";
+import documentRoutes from "../modules/documents/document.routes.js";
 
 import { checkDatabaseConnection } from "../shared/infra/health-check.js";
 
@@ -14,6 +15,7 @@ router.use("/users", userRoutes);
 router.use("/organizations", organizationRoutes);
 router.use("/properties", propertyRoutes);
 router.use("/partners", partnerRoutes);
+router.use("/documents", documentRoutes);
 
 router.get("/health", async (req, res, next) => {
   try {
