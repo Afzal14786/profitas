@@ -10,7 +10,13 @@ export function validate(schema, source = "body") {
       });
     }
 
-    const target = source === "query" ? req.query : source === "params" ? req.params : req.body;
+    const target =
+      source === "query"
+        ? req.query
+        : source === "params"
+        ? req.params
+        : req.body;
+
     const result = schema.safeParse(target);
 
     if (!result.success) {
@@ -23,9 +29,26 @@ export function validate(schema, source = "body") {
       });
     }
 
-    if (source === "query") req.query = result.data;
-    else if (source === "params") req.params = result.data;
-    else req.body = result.data;
+    // Express 5 makes req.query (and sometimes req.params) getter-only on the
+    // prototype. Shadow them on the instance so downstream controllers see
+    // the validated + coerced values.
+    if (source === "query") {
+      Object.defineProperty(req, "query", {
+        value: result.data,
+        writable: true,
+        configurable: true,
+        enumerable: true,
+      });
+    } else if (source === "params") {
+      Object.defineProperty(req, "params", {
+        value: result.data,
+        writable: true,
+        configurable: true,
+        enumerable: true,
+      });
+    } else {
+      req.body = result.data;
+    }
 
     next();
   };

@@ -1,5 +1,6 @@
 import { asyncHandler } from "../../shared/utils/async-handler.js";
 import { ApiResponse } from "../../shared/utils/api-response.js";
+import {HTTP_STATUS} from "../../shared/constants/http-status.js";
 import * as userService from "./user.service.js";
 
 export const getMe = asyncHandler(async (req, res) => {
@@ -13,8 +14,8 @@ export const updateMe = asyncHandler(async (req, res) => {
 });
 
 export const getAllUsers = asyncHandler(async (req, res) => {
-  const users = await userService.listUsers();
-  res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, users, "Users retrieved"));
+  const result = await userService.listUsers(req.query);
+  res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, result, "Users retrieved"));
 });
 
 export const updateUser = asyncHandler(async (req, res) => {

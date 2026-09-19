@@ -1,4 +1,4 @@
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, count, and, or, ilike } from "drizzle-orm";
 import { db } from "../../db/index.js";
 import { users } from "../../db/schema/users.schema.js";
 import { AppError } from "../../shared/utils/app-error.js";
@@ -31,8 +31,49 @@ export async function updateProfile(userId, data) {
   return updated;
 }
 
-export async function listUsers() {
-  return db.select(safeUserColumns).from(users).orderBy(desc(users.createdAt));
+export async function listUsers({ q, role, isActive, page, limit }) {
+  const conditions = [];
+
+  if (role) conditions.push(eq(users.role, role));
+  if (typeof isActive === "boolean") {
+    conditions.push(eq(users.isActive, isActive));
+  }
+  if (q) {
+    conditions.push(
+      or(
+        ilike(users.name, `%${q}%`),
+        ilike(users.email, `%${q}%`)
+      )
+    );
+  }
+
+  const where = conditions.length ? and(...conditions) : undefined;
+  const offset = (page - 1) * limit;
+
+  const rows = await db
+    .select(safeUserColumns)
+    .from(users)
+    .where(where)
+    .orderBy(desc(users.createdAt))
+    .limit(limit)
+    .offset(offset);
+
+  const [totalRow] = await db
+    .select({ total: count() })
+    .from(users)
+    .where(where);
+
+  const total = Number(totalRow?.total || 0);
+
+  return {
+    data: rows,
+    pagination: {
+      page,
+      limit,
+      total,
+      pages: Math.ceil(total / limit) || 1,
+    },
+  };
 }
 
 export async function updateUserById(userId, data) {

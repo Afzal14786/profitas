@@ -77,3 +77,9 @@ export const updateCreditStatus = asyncHandler(async (req, res) => {
   const r = await svc.updateCreditStatus(req.params.id, req.body);
   res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, r, "Credit status updated"));
 });
+
+
+export const listOffersCtrl = asyncHandler(async (req, res) => {
+  const r = await svc.listOffersByListing(req.params.id);
+  res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, r, "Offers retrieved"));
+});

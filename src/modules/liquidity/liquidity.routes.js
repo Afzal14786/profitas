@@ -115,4 +115,10 @@ router.patch(
   ctrl.updateCreditStatus,
 );
 
+router.get(
+  "/listings/:id/offers",
+  validate(uuidParamSchema, "params"),
+  ctrl.listOffersCtrl
+);
+
 export default router;

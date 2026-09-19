@@ -485,3 +485,8 @@ export async function updateCreditStatus(id, { status }) {
   }
   return updated;
 }
+
+export async function listOffersByListing(listingId) {
+  const rows = await db.select().from(offers).where(eq(offers.listingId, listingId));
+  return rows;
+}

@@ -1,5 +1,6 @@
 import { asyncHandler } from "../../shared/utils/async-handler.js";
 import { ApiResponse } from "../../shared/utils/api-response.js";
+import {HTTP_STATUS} from "../../shared/constants/http-status.js";
 import * as authService from "./auth.service.js";
 
 export const register = asyncHandler(async (req, res) => {
