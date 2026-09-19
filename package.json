@@ -10,7 +10,8 @@
     "start": "node ./src/server.js",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "db:seed": "node src/db/seed.js"
   },
   "keywords": [],
   "type": "module",
