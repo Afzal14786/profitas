@@ -1,5 +1,6 @@
 import { asyncHandler } from "../../shared/utils/async-handler.js";
 import { ApiResponse } from "../../shared/utils/api-response.js";
+import {HTTP_STATUS} from "../../shared/constants/http-status.js";
 import * as propertyService from "./property.service.js";
 
 export const create = asyncHandler(async (req, res) => {
@@ -11,12 +12,12 @@ export const create = asyncHandler(async (req, res) => {
 
 export const list = asyncHandler(async (req, res) => {
   const result = await propertyService.listProperties(req.query);
-  res.status(200).json(new ApiResponse(200, result, "Properties retrieved"));
+  res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, result, "Properties retrieved"));
 });
 
 export const getOne = asyncHandler(async (req, res) => {
   const property = await propertyService.getPropertyById(req.params.id);
-  res.status(200).json(new ApiResponse(200, property, "Property retrieved"));
+  res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, property, "Property retrieved"));
 });
 
 export const update = asyncHandler(async (req, res) => {
@@ -25,7 +26,7 @@ export const update = asyncHandler(async (req, res) => {
     req.user,
     req.body,
   );
-  res.status(200).json(new ApiResponse(200, updated, "Property updated"));
+  res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, updated, "Property updated"));
 });
 
 export const updateStatus = asyncHandler(async (req, res) => {
@@ -35,8 +36,8 @@ export const updateStatus = asyncHandler(async (req, res) => {
     req.body,
   );
   res
-    .status(200)
-    .json(new ApiResponse(200, updated, "Property status updated"));
+    .status(HTTP_STATUS.OK)
+    .json(new ApiResponse(HTTP_STATUS.OK, updated, "Property status updated"));
 });
 
 export const archive = asyncHandler(async (req, res) => {
@@ -44,5 +45,5 @@ export const archive = asyncHandler(async (req, res) => {
     req.params.id,
     req.user,
   );
-  res.status(200).json(new ApiResponse(200, archived, "Property archived"));
+  res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, archived, "Property archived"));
 });
