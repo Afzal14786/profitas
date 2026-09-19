@@ -1,12 +1,15 @@
 import { Router } from "express";
 import authRoutes from "../modules/auth/auth.routes.js";
 import userRoutes from "../modules/users/user.routes.js";
+import organizationRoutes from "../modules/organizations/organization.routes.js";
+
 import { checkDatabaseConnection } from "../shared/infra/health-check.js";
 
 const router = Router();
 
 router.use("/auth", authRoutes);
 router.use("/users", userRoutes);
+router.use("/organizations", organizationRoutes);
 
 router.get("/health", async (req, res, next) => {
   try {

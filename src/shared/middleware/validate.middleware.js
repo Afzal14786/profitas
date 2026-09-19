@@ -1,8 +1,18 @@
-export function validate(schema) {
+export function validate(schema, source = "body") {
   return (req, res, next) => {
-    console.log("Content-Type:", req.headers["content-type"]);
-    console.log("req.body:", req.body);
-    const result = schema.safeParse(req.body);
+    if (source === "body" && req.body === undefined) {
+      return res.status(415).json({
+        success: false,
+        statusCode: 415,
+        code: "UNSUPPORTED_MEDIA_TYPE",
+        message:
+          "Request body was not parsed. Send Content-Type: application/json with a JSON body.",
+      });
+    }
+
+    const target = source === "query" ? req.query : source === "params" ? req.params : req.body;
+    const result = schema.safeParse(target);
+
     if (!result.success) {
       return res.status(400).json({
         success: false,
@@ -12,7 +22,11 @@ export function validate(schema) {
         details: result.error.flatten(),
       });
     }
-    req.body = result.data;
+
+    if (source === "query") req.query = result.data;
+    else if (source === "params") req.params = result.data;
+    else req.body = result.data;
+
     next();
   };
 }
