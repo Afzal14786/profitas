@@ -6,6 +6,7 @@ import propertyRoutes from "../modules/properties/property.routes.js";
 import partnerRoutes from "../modules/partners/partner.routes.js";
 import documentRoutes from "../modules/documents/document.routes.js";
 import verificationRoutes from "../modules/verifications/verification.routes.js";
+import complianceRoutes from "../modules/compliance/compliance.routes.js";
 
 import { checkDatabaseConnection } from "../shared/infra/health-check.js";
 
@@ -18,6 +19,7 @@ router.use("/properties", propertyRoutes);
 router.use("/partners", partnerRoutes);
 router.use("/documents", documentRoutes);
 router.use("/verifications", verificationRoutes);
+router.use("/compliance", complianceRoutes);
 
 router.get("/health", async (req, res, next) => {
   try {
